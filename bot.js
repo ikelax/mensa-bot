@@ -30,6 +30,10 @@ function test(mealplans) {
             return mealTitle;
           }
 
+          if (meal.components.length === 0) {
+            return mealTitle;
+          }
+
           const extras = meal.components
             .map((component) => component.name)
             .join("\n");
@@ -50,7 +54,7 @@ async function getMealplans() {
     .replaceAll("(", "\\(")
     .replaceAll(")", "\\)");
   const link = "[Speiseplan](https://mensaar.de/#/menu/sb)";
-  return escapedMealplans + "\n" + link;
+  return escapedMealplans + "\n\n" + link;
 }
 
 const bot = new Bot(Deno.env.get("TELEGRAM_BOT_TOKEN"));
