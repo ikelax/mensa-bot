@@ -11,7 +11,7 @@ function test(mealplans) {
   const todaysMealplan = mealplans.days.find((day) => isToday(day.date));
 
   if (todaysMealplan == undefined) {
-    return "Heute gibt es kein Essen in der Mensa!";
+    return "Heute gibt es kein Essen in der Mensa\\!";
   }
 
   const counters = todaysMealplan.counters.filter((meal) => meal.id !== "info");
