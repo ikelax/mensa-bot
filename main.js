@@ -1,6 +1,9 @@
 import { webhookCallback } from "grammy";
 import { bot } from "./bot.js";
 
+const endpoint = "https://mensa-bot.deno.dev/" + bot.token;
+await bot.api.setWebhook(endpoint);
+
 const handleUpdate = webhookCallback(bot, "std/http");
 
 Deno.serve(async (req) => {
