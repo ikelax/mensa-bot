@@ -1,12 +1,15 @@
 import ky from "ky";
 import { Bot, InlineQueryResultBuilder } from "grammy";
 
-export {getMensaBot}
+export { getMensaBot };
 
-function isToday(dateString) {
-  var inputDate = new Date(dateString);
-  var todaysDate = new Date();
-  return inputDate.setHours(0, 0, 0, 0) == todaysDate.setHours(0, 0, 0, 0);
+/**
+ * @param {string} timestamp ISO timestamp that looks like ...
+ * @returns {boolean} whether the timestamp represents a time that is today
+ */
+function isToday(timestamp, todaysDate = new Date()) {
+  const timestampDate = new Date(timestamp);
+  return timestampDate.setHours(0, 0, 0, 0) === todaysDate.setHours(0, 0, 0, 0);
 }
 
 function test(mealplans) {
@@ -59,13 +62,18 @@ async function getMealplans() {
   return escapedMealplans + "\n\n" + link;
 }
 
+/**
+ * @param {string} token the token to access the HTTP API of Telegram
+ * @returns the bot for tasks related to the Mensa
+ */
 function getMensaBot(token) {
   const bot = new Bot(token);
 
   bot.command("start", (ctx) => ctx.reply("Welcome! Up and running."));
   bot.on(
     "message",
-    async (ctx) => ctx.reply(await getMealplans(), { parse_mode: "MarkdownV2" }),
+    async (ctx) =>
+      ctx.reply(await getMealplans(), { parse_mode: "MarkdownV2" }),
   );
   bot.on("inline_query", async (ctx) => {
     const result = InlineQueryResultBuilder.article("id", "Mensa UdS").text(
@@ -75,5 +83,5 @@ function getMensaBot(token) {
     await ctx.answerInlineQuery([result], { cache_time: 0 });
   });
 
-  return bot
+  return bot;
 }
