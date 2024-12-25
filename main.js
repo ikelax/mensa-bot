@@ -1,7 +1,7 @@
 import { webhookCallback } from "grammy";
 import { getMensaBot } from "./bot.js";
 
-const bot = getMensaBot(Deno.env.get("TELEGRAM_BOT_PROD_TOKEN"))
+const bot = getMensaBot(Deno.env.get("TELEGRAM_BOT_PROD_TOKEN"));
 const endpoint = "https://mensa-bot.deno.dev/" + bot.token;
 await bot.api.setWebhook(endpoint);
 
