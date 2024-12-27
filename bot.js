@@ -1,5 +1,11 @@
 import { Bot, InlineQueryResultBuilder } from "grammy";
-import { fetchMealplans, getTodaysMealplan } from "./mealplans.js";
+import {
+  fetchMealplans,
+  formatMealplan,
+  getMealplanTitle,
+  getTodaysMealplan,
+  sortMealplans,
+} from "./mealplans.js";
 
 export { getMensaBot };
 
@@ -7,6 +13,20 @@ async function replyWithTodaysMealplan(ctx) {
   const mealplans = await fetchMealplans();
   const todaysMealplan = getTodaysMealplan(mealplans);
   ctx.reply(todaysMealplan, { parse_mode: "MarkdownV2" });
+}
+
+async function getInlineQueryResults() {
+  const mealplans = await fetchMealplans();
+
+  return sortMealplans(mealplans).map((mealplan) =>
+    InlineQueryResultBuilder.article(
+      mealplan.date,
+      getMealplanTitle(mealplan.date),
+    ).text(
+      formatMealplan(mealplan),
+      { parse_mode: "MarkdownV2" },
+    )
+  );
 }
 
 /**
@@ -22,11 +42,9 @@ function getMensaBot(token) {
     async (ctx) => replyWithTodaysMealplan(ctx),
   );
   bot.on("inline_query", async (ctx) => {
-    const result = InlineQueryResultBuilder.article("id", "Mensa UdS").text(
-      await getMealplans(),
-      { parse_mode: "MarkdownV2" },
-    );
-    await ctx.answerInlineQuery([result], { cache_time: 0 });
+    await ctx.answerInlineQuery(await getInlineQueryResults(), {
+      cache_time: 0,
+    });
   });
 
   return bot;
