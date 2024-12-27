@@ -6,6 +6,7 @@ import {
   getTodaysMealplan,
   sortMealplans,
 } from "./mealplans.js";
+import { START_MESSAGE } from "./dotenv-defaults.js";
 
 export { getMensaBot };
 
@@ -36,7 +37,7 @@ async function getInlineQueryResults() {
 function getMensaBot(token) {
   const bot = new Bot(token);
 
-  bot.command("start", (ctx) => ctx.reply("Welcome! Up and running."));
+  bot.command("start", (ctx) => ctx.reply(START_MESSAGE));
   bot.on(
     "message",
     (ctx) => replyWithTodaysMealplan(ctx),
