@@ -9,5 +9,10 @@
     "ky": "https://esm.sh/ky",
     "date-fns": "npm:date-fns",
     "date-fns/locale/de": "npm:date-fns/locale/de"
+  },
+  "lint": {
+    "rules": {
+      "tags": ["recommended"]
+    }
   }
 }
