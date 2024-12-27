@@ -1,6 +1,7 @@
 import { format, isPast, isToday } from "date-fns";
 import { de } from "date-fns/locale";
 import ky from "ky";
+import { MEALPLAN, NO_FOOD_MESSAGE } from "./dotenv-defaults";
 
 export {
   fetchMealplans,
@@ -10,7 +11,7 @@ export {
   sortMealplans,
 };
 
-const linkToMealplan = "[Speiseplan](https://mensaar.de/#/menu/sb)";
+const linkToMealplan = `[${MEALPLAN}](https://mensaar.de/#/menu/sb)`;
 const dateFnsOptions = { locale: de };
 
 /**
@@ -36,7 +37,7 @@ function getTodaysMealplan(mealplans) {
   const todaysMealplan = findTodaysMealplan(mealplans);
 
   if (todaysMealplan == undefined) {
-    return "Heute gibt es kein Essen in der Mensa\\!\n\n" + linkToMealplan;
+    return `${NO_FOOD_MESSAGE}\n\n` + linkToMealplan;
   }
 
   return formatMealplan(todaysMealplan);
@@ -96,7 +97,7 @@ function formatCounter(counter) {
  */
 function formatMeal(meal) {
   const price = meal?.prices?.s ?? "???";
-  const mealTitle = `${meal.name} für ${price}€`;
+  const mealTitle = `${meal.name} - ${price}€`;
 
   if (meal.name === "Salatbuffet" || meal.components.length === 0) {
     return mealTitle;
