@@ -1,9 +1,17 @@
-import { isToday } from "date-fns";
+import { format, isPast, isToday } from "date-fns";
+import { de } from "date-fns/locale";
 import ky from "ky";
 
-export { fetchMealplans, getTodaysMealplan };
+export {
+  fetchMealplans,
+  formatMealplan,
+  getMealplanTitle,
+  getTodaysMealplan,
+  sortMealplans,
+};
 
 const linkToMealplan = "[Speiseplan](https://mensaar.de/#/menu/sb)";
+const dateFnsOptions = { locale: de };
 
 /**
  * Fetches the mealplans from the Mensaar page.
@@ -25,7 +33,7 @@ async function fetchMealplans() {
  * no food today
  */
 function getTodaysMealplan(mealplans) {
-  const todaysMealplan = mealplans.days.find((day) => isToday(day.date));
+  const todaysMealplan = findTodaysMealplan(mealplans);
 
   if (todaysMealplan == undefined) {
     return "Heute gibt es kein Essen in der Mensa\\!\n\n" + linkToMealplan;
@@ -45,6 +53,10 @@ function getTodaysMealplan(mealplans) {
  */
 function formatMealplan(mealplan) {
   const counters = mealplan.counters.filter((meal) => meal.id !== "info");
+
+  const title = `__*${getMealplanTitle(mealplan.date)}*__`
+    .replaceAll(".", "\\.");
+
   const formattedCounters = counters
     .map((counter) => formatCounter(counter))
     .join("\n\n")
@@ -54,7 +66,7 @@ function formatMealplan(mealplan) {
     .replaceAll("(", "\\(")
     .replaceAll(")", "\\)");
 
-  return formattedCounters + "\n\n" + linkToMealplan;
+  return title + "\n\n" + formattedCounters + "\n\n" + linkToMealplan;
 }
 
 /**
@@ -94,4 +106,60 @@ function formatMeal(meal) {
     .map((component) => component.name)
     .join("\n");
   return mealTitle + "\n" + extras;
+}
+
+/**
+ * Sorts the mealplans by their date. Mealsplan with a date in the past
+ * are place at the end. Mealplans not in the past are sorted in
+ * ascending order. Mealsplan in the past are sorted in descending
+ * order.
+ *
+ * @param {*} mealplans the mealplans to sort
+ * @returns the sorted mealplans
+ */
+function sortMealplans(mealplans) {
+  const sortedPastMealplans = mealplans.days.filter((day) => day.isPast)
+    .sort((dayA, dayB) => dayB - dayA);
+  const sortedFutureMealplans = mealplans.days.filter((day) => !day.isPast)
+    .sort((dayA, dayB) => dayA - dayB);
+
+  return [...sortedFutureMealplans, ...sortedPastMealplans];
+}
+
+/**
+ * Searches for todays mealplan in the mealplans object.
+ *
+ * @param {*} mealplans the mealplans to search
+ * @returns {object | undefined} todays mealplan or undefined if it did not find the mealplan
+ */
+function findTodaysMealplan(mealplans) {
+  return mealplans.days.find((day) => isToday(day.date));
+}
+
+/**
+ * The title of the mealplan has the format
+ *
+ * "Montag, 06.01.2025 (heute)"
+ * "Mittwoch, 17.10.2024 (vergangen)"
+ * "Freitag, 24.06.2025"
+ *
+ * If the mealplan is for today, "(heute)" is added at the end.
+ * If the mealplan is in the past, "(vergangen)" is added.
+ *
+ * @param {string} timestamp
+ * @returns {string} the title of the mealplan
+ */
+function getMealplanTitle(timestamp) {
+  const weekday = format(timestamp, "EEEE", dateFnsOptions);
+  const date = format(timestamp, "P", dateFnsOptions);
+
+  if (isToday(timestamp)) {
+    return `${weekday}, ${date} (heute)`;
+  }
+
+  if (isPast(timestamp)) {
+    return `${weekday}, ${date} (vergangen)`;
+  }
+
+  return `${weekday}, ${date}`;
 }
