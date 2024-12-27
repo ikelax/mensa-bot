@@ -39,7 +39,7 @@ function getMensaBot(token) {
   bot.command("start", (ctx) => ctx.reply("Welcome! Up and running."));
   bot.on(
     "message",
-    async (ctx) => replyWithTodaysMealplan(ctx),
+    (ctx) => replyWithTodaysMealplan(ctx),
   );
   bot.on("inline_query", async (ctx) => {
     await ctx.answerInlineQuery(await getInlineQueryResults(), {
