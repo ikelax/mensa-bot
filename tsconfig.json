@@ -1,0 +1,12 @@
+{
+  "extends": "@tsconfig/recommended/tsconfig.json",
+
+  "compilerOptions": {
+    "moduleResolution": "node",
+    "module": "es2022",
+    "target": "es2022",
+    "noImplicitAny": false,
+    "checkJs": true,
+    "noEmit": true
+  }
+}

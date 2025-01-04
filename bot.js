@@ -26,7 +26,7 @@ async function replyWithMealplanOnDate(ctx, date, messageIfNoMealplanIsFound) {
     date,
     messageIfNoMealplanIsFound,
   );
-  ctx.reply(mealplanOnDate, {
+  await ctx.reply(mealplanOnDate, {
     parse_mode: "MarkdownV2",
   });
 }
@@ -34,7 +34,7 @@ async function replyWithMealplanOnDate(ctx, date, messageIfNoMealplanIsFound) {
 async function replyWithListOfMealplanDates(ctx) {
   const mealplans = await fetchMealplans();
   const inlineKeyboard = getInlineKeyboard(mealplans);
-  ctx.reply("Choose a mealplan.", {
+  await ctx.reply("Choose a mealplan.", {
     reply_markup: inlineKeyboard,
   });
 }
@@ -78,7 +78,7 @@ function getMensaBot(token) {
       ),
   );
   bot.on("callback_query:data", async (ctx) => {
-    replyWithMealplanOnDate(
+    await replyWithMealplanOnDate(
       ctx,
       ctx.callbackQuery.data,
       "An dem Tag gibt es kein Essen in der Mensa\\!",
