@@ -1,4 +1,4 @@
-import { isToday, isPast, isSameDay } from "date-fns";
+import { isPast, isSameDay, isToday } from "date-fns";
 import ky from "ky";
 import { formatDate } from "./formatDate.js";
 
@@ -35,7 +35,6 @@ async function fetchMealplans() {
 function getMealplanOnDate(mealplans, timestamp, defaultMessage) {
   const mealplan = findMealplanOnDate(mealplans, timestamp);
 
-  //
   if (mealplan == undefined) {
     return defaultMessage + "\n\n" + linkToMealplan;
   }
