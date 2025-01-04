@@ -19,14 +19,14 @@ function getInlineKeyboard(mealplans) {
   return InlineKeyboard.from([buttonRow]).toTransposed();
 }
 
-async function replyWithMealplanOnDate(ctx, date) {
+async function replyWithMealplanOnDate(ctx, date, messageIfNoMealplanIsFound) {
   const mealplans = await fetchMealplans();
-  const todaysMealplan = getMealplanOnDate(
+  const mealplanOnDate = getMealplanOnDate(
     mealplans,
     date,
-    "Heute gibt es kein Essen in der Mensa\\!",
+    messageIfNoMealplanIsFound,
   );
-  ctx.reply(todaysMealplan, {
+  ctx.reply(mealplanOnDate, {
     parse_mode: "MarkdownV2",
   });
 }
@@ -62,20 +62,27 @@ function getMensaBot(token) {
 
   bot.command(
     "start",
-    (ctx) =>
-      ctx.reply("Welcome! Up and running."),
+    (ctx) => ctx.reply("Welcome! Up and running."),
   );
   bot.command(
     ["days", "d", "m", "mealplans", "meals", "menus"],
-    (ctx) =>
-      replyWithListOfMealplanDates(ctx)
+    (ctx) => replyWithListOfMealplanDates(ctx),
   );
   bot.on(
     "message",
-    (ctx) => replyWithMealplanOnDate(ctx, Date.now()),
+    (ctx) =>
+      replyWithMealplanOnDate(
+        ctx,
+        Date.now(),
+        "Heute gibt es kein Essen in der Mensa\\!",
+      ),
   );
   bot.on("callback_query:data", async (ctx) => {
-    replyWithMealplanOnDate(ctx, ctx.callbackQuery.data);
+    replyWithMealplanOnDate(
+      ctx,
+      ctx.callbackQuery.data,
+      "An dem Tag gibt es kein Essen in der Mensa\\!",
+    );
     await ctx.answerCallbackQuery();
   });
   bot.on("inline_query", async (ctx) => {
