@@ -1,8 +1,18 @@
 import { describe, expect, it } from "vitest";
-import {getMealplanTitle, sortMealplans} from "../mealplans";
-import original_mealplans from '../fixtures/original_mealplans.json' assert { type: 'json' };
-import unsorted_mealplans from '../fixtures/unsorted_mealplans.json' assert { type: 'json' };
-import sorted_mealplans from '../fixtures/sorted_mealplans.json' assert { type: 'json' };
+import {
+  getMealplanOnDate,
+  getMealplanTitle,
+  sortMealplans,
+} from "../mealplans";
+import original_mealplans from "../fixtures/original_mealplans.json" assert {
+  type: "json",
+};
+import unsorted_mealplans from "../fixtures/unsorted_mealplans.json" assert {
+  type: "json",
+};
+import sorted_mealplans from "../fixtures/sorted_mealplans.json" assert {
+  type: "json",
+};
 
 describe("getMealplanTitle", () => {
   it("returns the title for today's meal plan", () => {
@@ -27,12 +37,40 @@ describe("getMealplanTitle", () => {
   });
 });
 
-describe('sortMealplans', () => {
-  it('does not change an already sorted meal plans', () => {
+describe("sortMealplans", () => {
+  it("does not change an already sorted meal plans", () => {
     expect(sortMealplans(original_mealplans)).toEqual(original_mealplans.days);
-  })
+  });
 
-  it('sorts the meal plans', () => {
+  it("sorts the meal plans", () => {
     expect(sortMealplans(unsorted_mealplans)).toEqual(sorted_mealplans.days);
-  })
-})
+  });
+});
+
+describe("getMealplanOnDate", () => {
+  it("returns the default message if it does not find a meal plan", () => {
+    const defaultMessage = "default message";
+    expect(
+      getMealplanOnDate(
+        original_mealplans,
+        "2025-10-11T00:00:00.000Z",
+        defaultMessage,
+      ),
+    ).toBe(`${defaultMessage}\n\n[Speiseplan](https://mensaar.de/#/menu/sb)`);
+  });
+
+  it("returns the formatted meal plan", () => {
+    expect(
+      getMealplanOnDate(
+        original_mealplans,
+        "2025-01-31T00:00:00.000Z",
+        "",
+      ),
+    ).toBe(`__*Freitag, 31\\.01\\.2025*__
+
+__*Wahlessen \\- Aufgang C*__
+Changshou Nudelsuppe mit Rindfleisch für ???€
+
+[Speiseplan](https://mensaar.de/#/menu/sb)`);
+  });
+});

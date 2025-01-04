@@ -28,7 +28,7 @@ async function fetchMealplans() {
  * with a link to the meal plan.
  *
  * @param {*} mealplans an object with meal plans
- * @param {number} timestamp the timestamp of the date
+ * @param {string | number} timestamp the timestamp of the date
  * @param {string} defaultMessage the default message in case no meal plan is found
  * @returns {string} the meal plan for the date or the default message if no meal plan is found
  */
@@ -130,7 +130,7 @@ function sortMealplans(mealplans) {
  * Searches for a meal plan on a specific date in the meal plans object.
  *
  * @param {*} mealplans the meal plans to search
- * @param {number} timestamp the timestamp of the date
+ * @param {string | number} timestamp the timestamp of the date
  * @returns {object | undefined} the meal plan for the date or undefined if it did not find the meal plan
  */
 function findMealplanOnDate(mealplans, timestamp) {
