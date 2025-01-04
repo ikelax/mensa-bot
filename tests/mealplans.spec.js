@@ -77,18 +77,21 @@ Changshou Nudelsuppe mit Rindfleisch für ???€
 });
 
 describe("formatMealplan", () => {
-  it('formats a meal plan with only one counter', () => {
-    expect(formatMealplan(original_mealplans.days[5])).toBe(`__*Montag, 27\\.01\\.2025*__
+  it("formats a meal plan with only one counter", () => {
+    expect(formatMealplan(original_mealplans.days[5])).toBe(
+      `__*Montag, 27\\.01\\.2025*__
 
 __*Wahlessen \\- Aufgang C*__
 Shizitóu Löwenkopf\\-Fleischbällchen für ???€
 Basmatireis \\(aus biologischem Anbau\\)
 
-[Speiseplan](https://mensaar.de/#/menu/sb)`)
-  })
+[Speiseplan](https://mensaar.de/#/menu/sb)`,
+    );
+  });
 
-  it('formats a meal plan with many counters', () => {
-    expect(formatMealplan(original_mealplans.days[1])).toBe(`__*Dienstag, 07\\.01\\.2025*__
+  it("formats a meal plan with many counters", () => {
+    expect(formatMealplan(original_mealplans.days[1])).toBe(
+      `__*Dienstag, 07\\.01\\.2025*__
 
 __*Menü 1 \\- Aufgang B*__
 Chili sin carne für 3,10€
@@ -121,6 +124,7 @@ Pizza Diavolo mit Peperoni, Salami und Paprika für ???€
 
 Pizza vegetarisch mit Oliven, Paprika,Broccoli und getrockneten Tomaten für ???€
 
-[Speiseplan](https://mensaar.de/#/menu/sb)`)
-  })
-})
+[Speiseplan](https://mensaar.de/#/menu/sb)`,
+    );
+  });
+});
