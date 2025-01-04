@@ -1,4 +1,4 @@
-import { isPast, isSameDay, isToday } from "date-fns";
+import { isBefore, isSameDay } from "date-fns";
 import ky from "ky";
 import { formatDate } from "./formatDate.js";
 
@@ -35,7 +35,7 @@ async function fetchMealplans() {
 function getMealplanOnDate(mealplans, timestamp, defaultMessage) {
   const mealplan = findMealplanOnDate(mealplans, timestamp);
 
-  if (mealplan == undefined) {
+  if (mealplan === undefined) {
     return defaultMessage + "\n\n" + linkToMealplan;
   }
 
@@ -147,17 +147,21 @@ function findMealplanOnDate(mealplans, timestamp) {
  * If the mealplan is for today, "(heute)" is added at the end.
  * If the mealplan is in the past, "(vergangen)" is added.
  *
- * @param {string} timestamp
+ * @param {string} timestamp the date of the mealplan as a timestamp
+ * @param {number | string} today the date of today, only required for tests
  * @returns {string} the title of the mealplan
  */
-function getMealplanTitle(timestamp) {
+function getMealplanTitle(timestamp, today = Date.now()) {
   const date = formatDate(timestamp);
 
-  if (isToday(timestamp)) {
+  if (isSameDay(timestamp, today)) {
     return `${date} (heute)`;
   }
 
-  if (isPast(timestamp)) {
+  // The previous if-clause checks if today and timestamp are on the same day.
+  // Hence, here timestamp can only be in the past or in the future such that
+  // isBefore is only true if timestamp is the past.
+  if (isBefore(timestamp, today)) {
     return `${date} (vergangen)`;
   }
 
