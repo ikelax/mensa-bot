@@ -1,18 +1,42 @@
-import { Bot, InlineQueryResultBuilder } from "grammy";
+import { Bot, InlineKeyboard, InlineQueryResultBuilder } from "grammy";
 import {
   fetchMealplans,
   formatMealplan,
+  getMealplanOnDate,
   getMealplanTitle,
-  getTodaysMealplan,
   sortMealplans,
 } from "./mealplans.js";
+import { formatDate } from "./formatDate.js";
 
 export { getMensaBot };
 
-async function replyWithTodaysMealplan(ctx) {
+function getInlineKeyboard(mealplans) {
+  const labelDataPairs = mealplans.days.map((
+    day,
+  ) => [formatDate(day.date), day.date]);
+  const buttonRow = labelDataPairs
+    .map(([label, data]) => InlineKeyboard.text(label, data));
+  return InlineKeyboard.from([buttonRow]).toTransposed();
+}
+
+async function replyWithMealplanOnDate(ctx, date, messageIfNoMealplanIsFound) {
   const mealplans = await fetchMealplans();
-  const todaysMealplan = getTodaysMealplan(mealplans);
-  ctx.reply(todaysMealplan, { parse_mode: "MarkdownV2" });
+  const mealplanOnDate = getMealplanOnDate(
+    mealplans,
+    date,
+    messageIfNoMealplanIsFound,
+  );
+  ctx.reply(mealplanOnDate, {
+    parse_mode: "MarkdownV2",
+  });
+}
+
+async function replyWithListOfMealplanDates(ctx) {
+  const mealplans = await fetchMealplans();
+  const inlineKeyboard = getInlineKeyboard(mealplans);
+  ctx.reply("Choose a mealplan.", {
+    reply_markup: inlineKeyboard,
+  });
 }
 
 async function getInlineQueryResults() {
@@ -36,11 +60,31 @@ async function getInlineQueryResults() {
 function getMensaBot(token) {
   const bot = new Bot(token);
 
-  bot.command("start", (ctx) => ctx.reply("Welcome! Up and running."));
+  bot.command(
+    "start",
+    (ctx) => ctx.reply("Welcome! Up and running."),
+  );
+  bot.command(
+    ["days", "d", "m", "mealplans", "meals", "menus"],
+    (ctx) => replyWithListOfMealplanDates(ctx),
+  );
   bot.on(
     "message",
-    (ctx) => replyWithTodaysMealplan(ctx),
+    (ctx) =>
+      replyWithMealplanOnDate(
+        ctx,
+        Date.now(),
+        "Heute gibt es kein Essen in der Mensa\\!",
+      ),
   );
+  bot.on("callback_query:data", async (ctx) => {
+    replyWithMealplanOnDate(
+      ctx,
+      ctx.callbackQuery.data,
+      "An dem Tag gibt es kein Essen in der Mensa\\!",
+    );
+    await ctx.answerCallbackQuery();
+  });
   bot.on("inline_query", async (ctx) => {
     await ctx.answerInlineQuery(await getInlineQueryResults(), {
       cache_time: 0,

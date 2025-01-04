@@ -1,17 +1,16 @@
-import { format, isPast, isToday } from "date-fns";
-import { de } from "date-fns/locale";
+import { isPast, isSameDay, isToday } from "date-fns";
 import ky from "ky";
+import { formatDate } from "./formatDate.js";
 
 export {
   fetchMealplans,
   formatMealplan,
+  getMealplanOnDate,
   getMealplanTitle,
-  getTodaysMealplan,
   sortMealplans,
 };
 
 const linkToMealplan = "[Speiseplan](https://mensaar.de/#/menu/sb)";
-const dateFnsOptions = { locale: de };
 
 /**
  * Fetches the mealplans from the Mensaar page.
@@ -24,22 +23,23 @@ async function fetchMealplans() {
 }
 
 /**
- * Finds the mealplan for today and returns it formatted in Markdown.
- * If it does not find a mealplan for today, it returns a message
- * indicating this.
+ * Finds the mealplan on a specific date and returns it formatted in Markdown.
+ * If it does not find a mealplan on the date, it returns the `defaultMessage`
+ * with a link to the mealplan.
  *
  * @param {*} mealplans an object with mealplans
- * @returns {string} the mealplan for today or the message that there is
- * no food today
+ * @param {number} timestamp the timestamp of the date
+ * @param {string} defaultMessage the default message in case no mealplan is found
+ * @returns {string} the mealplan for the date or the default message if no mealplan is found
  */
-function getTodaysMealplan(mealplans) {
-  const todaysMealplan = findTodaysMealplan(mealplans);
+function getMealplanOnDate(mealplans, timestamp, defaultMessage) {
+  const mealplan = findMealplanOnDate(mealplans, timestamp);
 
-  if (todaysMealplan == undefined) {
-    return "Heute gibt es kein Essen in der Mensa\\!\n\n" + linkToMealplan;
+  if (mealplan == undefined) {
+    return defaultMessage + "\n\n" + linkToMealplan;
   }
 
-  return formatMealplan(todaysMealplan);
+  return formatMealplan(mealplan);
 }
 
 /**
@@ -127,13 +127,14 @@ function sortMealplans(mealplans) {
 }
 
 /**
- * Searches for todays mealplan in the mealplans object.
+ * Searches for a mealplan on a specific date in the mealplans object.
  *
  * @param {*} mealplans the mealplans to search
- * @returns {object | undefined} todays mealplan or undefined if it did not find the mealplan
+ * @param {number} timestamp the timestamp of the date
+ * @returns {object | undefined} the mealplan for the date or undefined if it did not find the mealplan
  */
-function findTodaysMealplan(mealplans) {
-  return mealplans.days.find((day) => isToday(day.date));
+function findMealplanOnDate(mealplans, timestamp) {
+  return mealplans.days.find((day) => isSameDay(day.date, timestamp));
 }
 
 /**
@@ -150,16 +151,15 @@ function findTodaysMealplan(mealplans) {
  * @returns {string} the title of the mealplan
  */
 function getMealplanTitle(timestamp) {
-  const weekday = format(timestamp, "EEEE", dateFnsOptions);
-  const date = format(timestamp, "P", dateFnsOptions);
+  const date = formatDate(timestamp);
 
   if (isToday(timestamp)) {
-    return `${weekday}, ${date} (heute)`;
+    return `${date} (heute)`;
   }
 
   if (isPast(timestamp)) {
-    return `${weekday}, ${date} (vergangen)`;
+    return `${date} (vergangen)`;
   }
 
-  return `${weekday}, ${date}`;
+  return date;
 }
