@@ -119,9 +119,9 @@ function formatMeal(meal) {
  */
 function sortMealplans(mealplans) {
   const sortedPastMealplans = mealplans.days.filter((day) => day.isPast)
-    .sort((dayA, dayB) => dayB - dayA);
+    .sort((dayA, dayB) => new Date(dayB.date) - new Date(dayA.date));
   const sortedFutureMealplans = mealplans.days.filter((day) => !day.isPast)
-    .sort((dayA, dayB) => dayA - dayB);
+    .sort((dayA, dayB) => new Date(dayA.date) - new Date(dayB.date));
 
   return [...sortedFutureMealplans, ...sortedPastMealplans];
 }

@@ -1,5 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { getMealplanTitle } from "../mealplans";
+import {getMealplanTitle, sortMealplans} from "../mealplans";
+import original_mealplans from '../fixtures/original_mealplans.json' assert { type: 'json' };
+import unsorted_mealplans from '../fixtures/unsorted_mealplans.json' assert { type: 'json' };
+import sorted_mealplans from '../fixtures/sorted_mealplans.json' assert { type: 'json' };
 
 describe("getMealplanTitle", () => {
   it("returns the title for today's meal plan", () => {
@@ -23,3 +26,13 @@ describe("getMealplanTitle", () => {
       .toBe("Montag, 24.05.1993");
   });
 });
+
+describe('sortMealplans', () => {
+  it('does not change an already sorted meal plans', () => {
+    expect(sortMealplans(original_mealplans)).toEqual(original_mealplans.days);
+  })
+
+  it('sorts the meal plans', () => {
+    expect(sortMealplans(unsorted_mealplans)).toEqual(sorted_mealplans.days);
+  })
+})
