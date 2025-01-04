@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+  formatMealplan,
   getMealplanOnDate,
   getMealplanTitle,
   sortMealplans,
@@ -74,3 +75,52 @@ Changshou Nudelsuppe mit Rindfleisch für ???€
 [Speiseplan](https://mensaar.de/#/menu/sb)`);
   });
 });
+
+describe("formatMealplan", () => {
+  it('formats a meal plan with only one counter', () => {
+    expect(formatMealplan(original_mealplans.days[5])).toBe(`__*Montag, 27\\.01\\.2025*__
+
+__*Wahlessen \\- Aufgang C*__
+Shizitóu Löwenkopf\\-Fleischbällchen für ???€
+Basmatireis \\(aus biologischem Anbau\\)
+
+[Speiseplan](https://mensaar.de/#/menu/sb)`)
+  })
+
+  it('formats a meal plan with many counters', () => {
+    expect(formatMealplan(original_mealplans.days[1])).toBe(`__*Dienstag, 07\\.01\\.2025*__
+
+__*Menü 1 \\- Aufgang B*__
+Chili sin carne für 3,10€
+Nachos
+Karottensalat
+Sahnepudding
+
+__*Menü 2 \\- Aufgang A*__
+Hähnchenbrustfilet Toscana für 3,65€
+Tomatensoße mit Gemüse
+Reis \\(aus biologischem Anbau\\)
+Alternativbeilage
+Bunt gemischter Blattsalat
+Weiße Salatsoße Dressing
+Klare Salatsoße
+Obst \\(Äpfel aus biologischem Anbau\\)
+
+__*Wahlessen \\- Aufgang C*__
+Hähnchenbrustfilet mit Spinat\\-Tomatensoße für ???€
+Tagliatelle
+
+Bunter Gemüseteller für ???€
+Vegan: Kräuter\\-Dip
+Gerstoni\\-Tomaten\\-Rucolasalat
+
+Salatbuffet für 3,70€
+
+__*Mensacafé \\- Erdgeschoss*__
+Pizza Diavolo mit Peperoni, Salami und Paprika für ???€
+
+Pizza vegetarisch mit Oliven, Paprika,Broccoli und getrockneten Tomaten für ???€
+
+[Speiseplan](https://mensaar.de/#/menu/sb)`)
+  })
+})
