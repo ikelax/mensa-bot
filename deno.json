@@ -3,13 +3,6 @@
     "dev": "deno run --allow-read --allow-net --allow-import --allow-env --env-file dev.js",
     "start": "deno run --allow-read --allow-net --allow-import --allow-env --env-file main.js"
   },
-  "imports": {
-    "@std/assert": "jsr:@std/assert@1",
-    "grammy": "https://deno.land/x/grammy@v1.33.0/mod.ts",
-    "ky": "https://esm.sh/ky",
-    "date-fns": "npm:date-fns",
-    "date-fns/locale/de": "npm:date-fns/locale/de"
-  },
   "lint": {
     "rules": {
       "tags": ["recommended"]
