@@ -54,8 +54,10 @@ function getMealplanOnDate(mealplans, timestamp, defaultMessage) {
 function formatMealplan(mealplan) {
   const counters = mealplan.counters.filter((meal) => meal.id !== "info");
 
-  const title = `__*${getMealplanTitle(mealplan.date)}*__`
-    .replaceAll(".", "\\.");
+  const title = `__*${getMealplanTitle(mealplan.date)}*__`.replaceAll(
+    ".",
+    "\\.",
+  );
 
   const formattedCounters = counters
     .map((counter) => formatCounter(counter))
@@ -79,9 +81,7 @@ function formatMealplan(mealplan) {
  */
 function formatCounter(counter) {
   const title = `__*${counter.displayName} - ${counter.description}*__\n`;
-  const meals = counter.meals
-    .map((meal) => formatMeal(meal))
-    .join("\n\n");
+  const meals = counter.meals.map((meal) => formatMeal(meal)).join("\n\n");
 
   return title + meals;
 }
@@ -102,9 +102,7 @@ function formatMeal(meal) {
     return mealTitle;
   }
 
-  const extras = meal.components
-    .map((component) => component.name)
-    .join("\n");
+  const extras = meal.components.map((component) => component.name).join("\n");
   return mealTitle + "\n" + extras;
 }
 
@@ -118,10 +116,18 @@ function formatMeal(meal) {
  * @returns the sorted meal plans
  */
 function sortMealplans(mealplans) {
-  const sortedPastMealplans = mealplans.days.filter((mealplan) => mealplan.isPast)
-    .sort((mealplanA, mealplanB) => new Date(mealplanB.date) - new Date(mealplanA.date));
-  const sortedFutureMealplans = mealplans.days.filter((mealplan) => !mealplan.isPast)
-    .sort((mealplanA, mealplanB) => new Date(mealplanA.date) - new Date(mealplanB.date));
+  const sortedPastMealplans = mealplans.days
+    .filter((mealplan) => mealplan.isPast)
+    .sort(
+      (mealplanA, mealplanB) =>
+        new Date(mealplanB.date) - new Date(mealplanA.date),
+    );
+  const sortedFutureMealplans = mealplans.days
+    .filter((mealplan) => !mealplan.isPast)
+    .sort(
+      (mealplanA, mealplanB) =>
+        new Date(mealplanA.date) - new Date(mealplanB.date),
+    );
 
   return [...sortedFutureMealplans, ...sortedPastMealplans];
 }
