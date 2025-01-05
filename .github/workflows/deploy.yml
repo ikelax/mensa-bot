@@ -36,3 +36,6 @@ jobs:
         with:
           project: mensa-bot
           entrypoint: main.js
+          include: |
+            main.js
+            src
