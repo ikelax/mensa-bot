@@ -55,6 +55,7 @@ project grows more, it could make sense to
 - replace the usages of the Deno runtime in `dev.js` and `main.js` with
   [dotenv](https://www.npmjs.com/package/dotenv) and for example [express](https://expressjs.com/)
 - add more unit tests and maybe property based tests
+- use a spell-checker like [typos](https://github.com/crate-ci/typos)
 
 ## Why JavaScript?
 
