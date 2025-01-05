@@ -1,5 +1,5 @@
 import { webhookCallback } from "grammy";
-import { getMensaBot } from "./src/bot.js";
+import { getMensaBot } from "./bot.js";
 
 if (import.meta.main) {
   const bot = getMensaBot(Deno.env.get("TELEGRAM_BOT_PROD_TOKEN"));
