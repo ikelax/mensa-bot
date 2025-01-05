@@ -1,4 +1,4 @@
-import { isPast, isSameDay, isToday } from "date-fns";
+import { isBefore, isSameDay } from "date-fns";
 import ky from "ky";
 import { formatDate } from "./formatDate.js";
 
@@ -13,9 +13,9 @@ export {
 const linkToMealplan = "[Speiseplan](https://mensaar.de/#/menu/sb)";
 
 /**
- * Fetches the mealplans from the Mensaar page.
+ * Fetches the meal plans from the Mensaar page.
  *
- * @returns the mealplans
+ * @returns the meal plans
  */
 async function fetchMealplans() {
   const url = "https://mensaar.de/api/2/TFtD8CTykAXXwrW4WBU4/1/de/getMenu/sb";
@@ -23,19 +23,19 @@ async function fetchMealplans() {
 }
 
 /**
- * Finds the mealplan on a specific date and returns it formatted in Markdown.
- * If it does not find a mealplan on the date, it returns the `defaultMessage`
- * with a link to the mealplan.
+ * Finds the meal plan on a specific date and returns it formatted in Markdown.
+ * If it does not find a meal plan on the date, it returns the `defaultMessage`
+ * with a link to the meal plan.
  *
- * @param {*} mealplans an object with mealplans
- * @param {number} timestamp the timestamp of the date
- * @param {string} defaultMessage the default message in case no mealplan is found
- * @returns {string} the mealplan for the date or the default message if no mealplan is found
+ * @param {*} mealplans an object with meal plans
+ * @param {string | number} timestamp the timestamp of the date
+ * @param {string} defaultMessage the default message in case no meal plan is found
+ * @returns {string} the meal plan for the date or the default message if no meal plan is found
  */
 function getMealplanOnDate(mealplans, timestamp, defaultMessage) {
   const mealplan = findMealplanOnDate(mealplans, timestamp);
 
-  if (mealplan == undefined) {
+  if (mealplan === undefined) {
     return defaultMessage + "\n\n" + linkToMealplan;
   }
 
@@ -43,13 +43,13 @@ function getMealplanOnDate(mealplans, timestamp, defaultMessage) {
 }
 
 /**
- * Formats the mealplan in Markdown.
+ * Formats the meal plan in Markdown.
  *
- * Usually, the mealplan of the mensa contains a section with
- * information which is excluded in the formatted mealplan.
+ * Usually, the meal plan of the mensa contains a section with
+ * information which is excluded in the formatted meal plan.
  *
- * @param {*} mealplan the mealplan to format
- * @returns {string} the formatted mealplan
+ * @param {*} mealplan the meal plan to format
+ * @returns {string} the formatted meal plan
  */
 function formatMealplan(mealplan) {
   const counters = mealplan.counters.filter((meal) => meal.id !== "info");
@@ -70,12 +70,12 @@ function formatMealplan(mealplan) {
 }
 
 /**
- * Formats the mealplan for the counter in Markdown.
+ * Formats the meal plan for the counter in Markdown.
  *
  * The mensa has many counters that offer meals.
  *
- * @param {*} counter the mealplan for the counter to format
- * @returns {string} the formatted mealplan for the counter
+ * @param {*} counter the meal plan for the counter to format
+ * @returns {string} the formatted meal plan for the counter
  */
 function formatCounter(counter) {
   const title = `__*${counter.displayName} - ${counter.description}*__\n`;
@@ -109,55 +109,59 @@ function formatMeal(meal) {
 }
 
 /**
- * Sorts the mealplans by their date. Mealsplan with a date in the past
- * are place at the end. Mealplans not in the past are sorted in
- * ascending order. Mealsplan in the past are sorted in descending
+ * Sorts the meal plans by their date. Meal plans with a date in the past
+ * are place at the end. Meal plans not in the past are sorted in
+ * ascending order. Meals plan in the past are sorted in descending
  * order.
  *
- * @param {*} mealplans the mealplans to sort
- * @returns the sorted mealplans
+ * @param {*} mealplans the meal plans to sort
+ * @returns the sorted meal plans
  */
 function sortMealplans(mealplans) {
-  const sortedPastMealplans = mealplans.days.filter((day) => day.isPast)
-    .sort((dayA, dayB) => dayB - dayA);
-  const sortedFutureMealplans = mealplans.days.filter((day) => !day.isPast)
-    .sort((dayA, dayB) => dayA - dayB);
+  const sortedPastMealplans = mealplans.days.filter((mealplan) => mealplan.isPast)
+    .sort((mealplanA, mealplanB) => new Date(mealplanB.date) - new Date(mealplanA.date));
+  const sortedFutureMealplans = mealplans.days.filter((mealplan) => !mealplan.isPast)
+    .sort((mealplanA, mealplanB) => new Date(mealplanA.date) - new Date(mealplanB.date));
 
   return [...sortedFutureMealplans, ...sortedPastMealplans];
 }
 
 /**
- * Searches for a mealplan on a specific date in the mealplans object.
+ * Searches for a meal plan on a specific date in the meal plans object.
  *
- * @param {*} mealplans the mealplans to search
- * @param {number} timestamp the timestamp of the date
- * @returns {object | undefined} the mealplan for the date or undefined if it did not find the mealplan
+ * @param {*} mealplans the meal plans to search
+ * @param {string | number} timestamp the timestamp of the date
+ * @returns {object | undefined} the meal plan for the date or undefined if it did not find the meal plan
  */
 function findMealplanOnDate(mealplans, timestamp) {
   return mealplans.days.find((day) => isSameDay(day.date, timestamp));
 }
 
 /**
- * The title of the mealplan has the format
+ * The title of the meal plan has the format
  *
  * "Montag, 06.01.2025 (heute)"
  * "Mittwoch, 17.10.2024 (vergangen)"
  * "Freitag, 24.06.2025"
  *
- * If the mealplan is for today, "(heute)" is added at the end.
- * If the mealplan is in the past, "(vergangen)" is added.
+ * If the meal plan is for today, "(heute)" is added at the end.
+ * If the meal plan is in the past, "(vergangen)" is added.
  *
- * @param {string} timestamp
- * @returns {string} the title of the mealplan
+ * @param {string} timestamp the date of the meal plan as a timestamp
+ * @param {number | string} today the date of today, only required for tests
+ * @returns {string} the title of the meal plan
  */
-function getMealplanTitle(timestamp) {
+function getMealplanTitle(timestamp, today = Date.now()) {
   const date = formatDate(timestamp);
 
-  if (isToday(timestamp)) {
+  if (isSameDay(timestamp, today)) {
     return `${date} (heute)`;
   }
 
-  if (isPast(timestamp)) {
+  // The previous if-clause checks if today and timestamp are on the same day.
+  // Hence, here timestamp can only be in the past or in the future such that
+  // isBefore is only true if timestamp is in the past.
+  if (isBefore(timestamp, today)) {
     return `${date} (vergangen)`;
   }
 

@@ -34,7 +34,7 @@ async function replyWithMealplanOnDate(ctx, date, messageIfNoMealplanIsFound) {
 async function replyWithListOfMealplanDates(ctx) {
   const mealplans = await fetchMealplans();
   const inlineKeyboard = getInlineKeyboard(mealplans);
-  ctx.reply("Choose a mealplan.", {
+  ctx.reply("Choose a meal plan.", {
     reply_markup: inlineKeyboard,
   });
 }
