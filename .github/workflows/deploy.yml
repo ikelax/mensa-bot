@@ -1,4 +1,4 @@
-name: Deploy
+name: Deno
 on:
   push:
     branches: main
@@ -26,16 +26,13 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: lts/*
+          node-version: 20
 
       - name: Install step
-        run: "npm install"
+        run: npm install
 
       - name: Upload to Deno Deploy
         uses: denoland/deployctl@v1
         with:
-          project: "mensa-bot2"
-          entrypoint: "main.js"
-          root: ""
-          
-          
+          project: mensa-bot
+          entrypoint: main.js
