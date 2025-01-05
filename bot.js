@@ -11,11 +11,13 @@ import { formatDate } from "./formatDate.js";
 export { getMensaBot };
 
 function getInlineKeyboard(mealplans) {
-  const labelDataPairs = mealplans.days.map((
-    day,
-  ) => [formatDate(day.date), day.date]);
-  const buttonRow = labelDataPairs
-    .map(([label, data]) => InlineKeyboard.text(label, data));
+  const labelDataPairs = mealplans.days.map((day) => [
+    formatDate(day.date),
+    day.date,
+  ]);
+  const buttonRow = labelDataPairs.map(([label, data]) =>
+    InlineKeyboard.text(label, data),
+  );
   return InlineKeyboard.from([buttonRow]).toTransposed();
 }
 
@@ -46,10 +48,7 @@ async function getInlineQueryResults() {
     InlineQueryResultBuilder.article(
       mealplan.date,
       getMealplanTitle(mealplan.date),
-    ).text(
-      formatMealplan(mealplan),
-      { parse_mode: "MarkdownV2" },
-    )
+    ).text(formatMealplan(mealplan), { parse_mode: "MarkdownV2" }),
   );
 }
 
@@ -60,22 +59,16 @@ async function getInlineQueryResults() {
 function getMensaBot(token) {
   const bot = new Bot(token);
 
-  bot.command(
-    "start",
-    (ctx) => ctx.reply("Welcome! Up and running."),
+  bot.command("start", (ctx) => ctx.reply("Welcome! Up and running."));
+  bot.command(["days", "d", "m", "mealplans", "meals", "menus"], (ctx) =>
+    replyWithListOfMealplanDates(ctx),
   );
-  bot.command(
-    ["days", "d", "m", "mealplans", "meals", "menus"],
-    (ctx) => replyWithListOfMealplanDates(ctx),
-  );
-  bot.on(
-    "message",
-    (ctx) =>
-      replyWithMealplanOnDate(
-        ctx,
-        Date.now(),
-        "Heute gibt es kein Essen in der Mensa\\!",
-      ),
+  bot.on("message", (ctx) =>
+    replyWithMealplanOnDate(
+      ctx,
+      Date.now(),
+      "Heute gibt es kein Essen in der Mensa\\!",
+    ),
   );
   bot.on("callback_query:data", async (ctx) => {
     replyWithMealplanOnDate(
