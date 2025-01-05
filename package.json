@@ -1,4 +1,8 @@
 {
+  "name": "mensa-bot",
+  "version": "1.0.0",
+  "description": "Telegram Bot for the meal plan in the canteen of Saarland University",
+  "main": "main.js",
   "scripts": {
     "test": "vitest",
     "coverage": "vitest run --coverage",
@@ -20,5 +24,10 @@
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ikelax/mensa-bot.git"
+  },
+  "private": true
 }
