@@ -1,8 +1,8 @@
 # Manual tests
 
-Because the unit tests do not the Telegram based functionality, the
-following manual tests should be done if (large) changes to the codebase
-are made.
+Because the unit tests do not cover the Telegram based functionality,
+the following manual tests should be done if (large) changes to the
+codebase are made.
 
 | Action                                                             | Expected result                                                      |
 | ------------------------------------------------------------------ | -------------------------------------------------------------------- |
