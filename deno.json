@@ -1,7 +1,8 @@
 {
   "tasks": {
-    "dev": "deno run --allow-read --allow-net --allow-import --allow-env --env-file dev.js",
-    "start": "deno run --allow-read --allow-net --allow-import --allow-env --env-file main.js"
+    "dev": "deno run  --allow-net --allow-env --env-file dev.js",
+    "start": "deno run  --allow-net --allow-env --env-file main.js",
+    "lint:fix": "deno lint --fix"
   },
   "lint": {
     "rules": {

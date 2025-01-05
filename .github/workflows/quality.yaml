@@ -30,3 +30,12 @@ jobs:
         run: npm install
       - name: Run tests
         run: npm test
+  deno-lint:
+    name: Deno lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+      - run: deno lint
