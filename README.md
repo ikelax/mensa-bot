@@ -19,6 +19,8 @@ When the bot receives on of the commands `/days`, `/d`, `/m`,
 for all days in the meal plan. It sends you the meals for the
 respective day when you click on one of the buttons.
 
+### Messages
+
 The bot replies with the meals for today if you send a message to it
 directly.
 
@@ -52,7 +54,7 @@ project grows more, it could make sense to
     - [eslint-plugin-vitest](https://www.npmjs.com/package/eslint-plugin-vitest)
 - replace the usages of the Deno runtime in `dev.js` and `main.js` with
   [dotenv](https://www.npmjs.com/package/dotenv) and for example [express](https://expressjs.com/)
-- add more unit tests and maybe property based testing
+- add more unit tests and maybe property based tests
 
 ## Why JavaScript?
 
