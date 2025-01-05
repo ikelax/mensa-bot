@@ -12,11 +12,11 @@
     "ky": "^1.7.4"
   },
   "devDependencies": {
-    "@vitest/coverage-v8": "^2.1.8",
+    "@vitest/coverage-v8": "^1.6.0",
     "husky": "^9.1.7",
     "lint-staged": "^15.3.0",
     "prettier": "3.4.2",
-    "vitest": "^2.1.8"
+    "vitest": "^1.6.0"
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"
