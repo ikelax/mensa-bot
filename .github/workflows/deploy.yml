@@ -35,7 +35,5 @@ jobs:
         uses: denoland/deployctl@v1
         with:
           project: mensa-bot
-          entrypoint: main.js
-          include: |
-            main.js
-            src
+          entrypoint: src/main.js
+          include: src
