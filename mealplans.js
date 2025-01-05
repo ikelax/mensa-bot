@@ -118,10 +118,10 @@ function formatMeal(meal) {
  * @returns the sorted meal plans
  */
 function sortMealplans(mealplans) {
-  const sortedPastMealplans = mealplans.days.filter((day) => day.isPast)
-    .sort((dayA, dayB) => new Date(dayB.date) - new Date(dayA.date));
-  const sortedFutureMealplans = mealplans.days.filter((day) => !day.isPast)
-    .sort((dayA, dayB) => new Date(dayA.date) - new Date(dayB.date));
+  const sortedPastMealplans = mealplans.days.filter((mealplan) => mealplan.isPast)
+    .sort((mealplanA, mealplanB) => new Date(mealplanB.date) - new Date(mealplanA.date));
+  const sortedFutureMealplans = mealplans.days.filter((mealplan) => !mealplan.isPast)
+    .sort((mealplanA, mealplanB) => new Date(mealplanA.date) - new Date(mealplanB.date));
 
   return [...sortedFutureMealplans, ...sortedPastMealplans];
 }
