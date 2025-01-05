@@ -160,7 +160,7 @@ function getMealplanTitle(timestamp, today = Date.now()) {
 
   // The previous if-clause checks if today and timestamp are on the same day.
   // Hence, here timestamp can only be in the past or in the future such that
-  // isBefore is only true if timestamp is the past.
+  // isBefore is only true if timestamp is in the past.
   if (isBefore(timestamp, today)) {
     return `${date} (vergangen)`;
   }
