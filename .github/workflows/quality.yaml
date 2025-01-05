@@ -31,7 +31,7 @@ jobs:
       - name: Run tests
         run: npm test
   deno-lint:
-    name: Deno's lint
+    name: Deno lint
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
