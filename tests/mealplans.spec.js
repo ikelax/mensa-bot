@@ -11,12 +11,10 @@ import sorted_mealplans from "../fixtures/sorted_mealplans.json" with { type: "j
 
 describe("getMealplanTitle", () => {
   beforeEach(() => {
-    // tell vitest we use mocked time
     vi.useFakeTimers();
   });
 
   afterEach(() => {
-    // restoring date after each test run
     vi.useRealTimers();
   });
 
@@ -87,12 +85,10 @@ Changshou Nudelsuppe mit Rindfleisch für ???€
 
 describe("formatMealplan", () => {
   beforeEach(() => {
-    // tell vitest we use mocked time
     vi.useFakeTimers();
   });
 
   afterEach(() => {
-    // restoring date after each test run
     vi.useRealTimers();
   });
 
