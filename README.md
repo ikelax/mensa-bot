@@ -14,10 +14,12 @@ select a day, the bot replies with the meals for this day.
 
 ### Commands
 
-When the bot receives on of the commands `/days`, `/d`, `/m`,
+When the bot receives one of the commands `/days`, `/d`, `/m`,
 `/mealplans`, `/meals` or `/menus`, it sends a list of inline buttons
 for all days in the meal plan. It sends you the meals for the
 respective day when you click on one of the buttons.
+
+The bot sends the meals for tomorrow for the commands `/t` and `/tomorrow`.
 
 ### Messages
 
