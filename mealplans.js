@@ -85,7 +85,7 @@ function escapeReservedCharacters(string) {
     .replaceAll("(", "\\(")
     .replaceAll(")", "\\)")
     .replaceAll(".", "\\.")
-    .replaceAll("#", "\\.");
+    .replaceAll("#", "\\#");
 }
 
 /**
