@@ -7,6 +7,7 @@ import {
   sortMealplans,
 } from "./mealplans.js";
 import { formatDate } from "./formatDate.js";
+import { addDays } from "date-fns";
 
 export { getMensaBot };
 
@@ -62,6 +63,13 @@ function getMensaBot(token) {
   bot.command("start", (ctx) => ctx.reply("Welcome! Up and running."));
   bot.command(["days", "d", "m", "mealplans", "meals", "menus"], (ctx) =>
     replyWithListOfMealplanDates(ctx),
+  );
+  bot.command(["t", "tomorrow"], (ctx) =>
+    replyWithMealplanOnDate(
+      ctx,
+      addDays(Date.now(), 1),
+      "Morgen gibt es kein Essen in der Mensa\\!",
+    ),
   );
   bot.on("message", (ctx) =>
     replyWithMealplanOnDate(
