@@ -1,6 +1,6 @@
 import { isBefore, isSameDay, isTomorrow } from "date-fns";
 import ky from "ky";
-import { formatDate } from "./date.js";
+import { formatDate } from "./formatDate.js";
 
 export {
   fetchMealplans,

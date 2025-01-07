@@ -6,7 +6,7 @@ import {
   getMealplanTitle,
   sortMealplans,
 } from "./mealplans.js";
-import { formatDate } from "./date.js";
+import { formatDate } from "./formatDate.js";
 
 export { getMensaBot };
 
