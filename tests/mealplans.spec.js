@@ -53,7 +53,12 @@ describe("getMealplanOnDate", () => {
 
   it("returns the formatted meal plan", () => {
     expect(
-      getMealplanOnDate(original_mealplans, "2025-01-31T00:00:00.000Z", ""),
+      getMealplanOnDate(
+        original_mealplans,
+        "2025-01-31T00:00:00.000Z",
+        "",
+        "2024-01-11T00:00:00.000Z",
+      ),
     ).toBe(`__*Freitag, 31\\.01\\.2025*__
 
 __*Wahlessen \\- Aufgang C*__
@@ -65,7 +70,9 @@ Changshou Nudelsuppe mit Rindfleisch für ???€
 
 describe("formatMealplan", () => {
   it("formats a meal plan with only one counter", () => {
-    expect(formatMealplan(original_mealplans.days[5])).toBe(
+    expect(
+      formatMealplan(original_mealplans.days[5], "1000-10-10T00:00:00.000Z"),
+    ).toBe(
       `__*Montag, 27\\.01\\.2025*__
 
 __*Wahlessen \\- Aufgang C*__
@@ -77,7 +84,9 @@ Basmatireis \\(aus biologischem Anbau\\)
   });
 
   it("formats a meal plan with many counters", () => {
-    expect(formatMealplan(original_mealplans.days[1])).toBe(
+    expect(
+      formatMealplan(original_mealplans.days[1], "2025-01-06T00:00:00.000Z"),
+    ).toBe(
       `__*Dienstag, 07\\.01\\.2025*__
 
 __*Menü 1 \\- Aufgang B*__
@@ -110,6 +119,34 @@ __*Mensacafé \\- Erdgeschoss*__
 Pizza Diavolo mit Peperoni, Salami und Paprika für ???€
 
 Pizza vegetarisch mit Oliven, Paprika,Broccoli und getrockneten Tomaten für ???€
+
+[Speiseplan](https://mensaar.de/#/menu/sb)`,
+    );
+  });
+
+  it("escapes the brackets for (heute) in the meal plan title", () => {
+    expect(
+      formatMealplan(original_mealplans.days[8], "2025-01-30T01:30:25.200Z"),
+    ).toBe(
+      `__*Donnerstag, 30\\.01\\.2025 \\(heute\\)*__
+
+__*Wahlessen \\- Aufgang C*__
+Kourou gedämpfter Schweinebauch für ???€
+Basmatireis \\(aus biologischem Anbau\\)
+Broccoligemüse
+
+[Speiseplan](https://mensaar.de/#/menu/sb)`,
+    );
+  });
+
+  it("escapes the brackets for (vergangen) in the meal plan title", () => {
+    expect(
+      formatMealplan(original_mealplans.days[7], "2025-03-14T11:05:00.000Z"),
+    ).toBe(
+      `__*Mittwoch, 29\\.01\\.2025 \\(vergangen\\)*__
+
+__*Wahlessen \\- Aufgang C*__
+Gebratene Nudeln mit Sojastreifen für ???€
 
 [Speiseplan](https://mensaar.de/#/menu/sb)`,
     );
