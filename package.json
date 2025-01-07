@@ -1,5 +1,6 @@
 {
   "name": "mensa-bot",
+  "type": "module",
   "version": "1.0.0",
   "description": "Telegram Bot for the meal plan in the canteen of Saarland University",
   "main": "main.js",
