@@ -30,16 +30,22 @@ async function fetchMealplans() {
  * @param {*} mealplans an object with meal plans
  * @param {string | number} timestamp the timestamp of the date
  * @param {string} defaultMessage the default message in case no meal plan is found
+ * @param {number | string} today the date of today, only required for tests
  * @returns {string} the meal plan for the date or the default message if no meal plan is found
  */
-function getMealplanOnDate(mealplans, timestamp, defaultMessage) {
+function getMealplanOnDate(
+  mealplans,
+  timestamp,
+  defaultMessage,
+  today = Date.now(),
+) {
   const mealplan = findMealplanOnDate(mealplans, timestamp);
 
   if (mealplan === undefined) {
     return defaultMessage + "\n\n" + linkToMealplan;
   }
 
-  return formatMealplan(mealplan);
+  return formatMealplan(mealplan, today);
 }
 
 /**
@@ -49,26 +55,37 @@ function getMealplanOnDate(mealplans, timestamp, defaultMessage) {
  * information which is excluded in the formatted meal plan.
  *
  * @param {*} mealplan the meal plan to format
+ * @param {number | string} today the date of today, only required for tests
  * @returns {string} the formatted meal plan
  */
-function formatMealplan(mealplan) {
+function formatMealplan(mealplan, today = Date.now()) {
   const counters = mealplan.counters.filter((meal) => meal.id !== "info");
 
-  const title = `__*${getMealplanTitle(mealplan.date)}*__`.replaceAll(
-    ".",
-    "\\.",
-  );
+  const title = `__*${getMealplanTitle(mealplan.date, today)}*__`;
 
   const formattedCounters = counters
     .map((counter) => formatCounter(counter))
-    .join("\n\n")
-    // Characters that have to be escaped in the Markdown style of Telegram.
-    // https://core.telegram.org/bots/api#markdownv2-style
+    .join("\n\n");
+
+  const formattedMealplan = title + "\n\n" + formattedCounters;
+
+  return escapeReservedCharacters(formattedMealplan) + "\n\n" + linkToMealplan;
+}
+
+/**
+ * Escapes characters that are reserved in the
+ * {@link https://core.telegram.org/bots/api#markdownv2-style|Markdown style of Telegram}.
+ *
+ * @param {string} string the string to escape
+ * @returns the escaped string
+ */
+function escapeReservedCharacters(string) {
+  return string
     .replaceAll("-", "\\-")
     .replaceAll("(", "\\(")
-    .replaceAll(")", "\\)");
-
-  return title + "\n\n" + formattedCounters + "\n\n" + linkToMealplan;
+    .replaceAll(")", "\\)")
+    .replaceAll(".", "\\.")
+    .replaceAll("#", "\\#");
 }
 
 /**
