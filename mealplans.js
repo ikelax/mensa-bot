@@ -1,4 +1,4 @@
-import { isBefore, isSameDay } from "date-fns";
+import { isBefore, isSameDay, isTomorrow } from "date-fns";
 import ky from "ky";
 import { formatDate } from "./date.js";
 
@@ -164,10 +164,12 @@ function findMealplanOnDate(mealplans, timestamp) {
  * The title of the meal plan has the format
  *
  * "Montag, 06.01.2025 (heute)"
+ * "Dienstag, 30.01.2031 (morgen)"
  * "Mittwoch, 17.10.2024 (vergangen)"
  * "Freitag, 24.06.2025"
  *
  * If the meal plan is for today, "(heute)" is added at the end.
+ * If the meal plan is for tomorrow, "(morgen)" is added at the end.
  * If the meal plan is in the past, "(vergangen)" is added.
  *
  * @param {string} timestamp the date of the meal plan as a timestamp
@@ -186,6 +188,13 @@ function getMealplanTitle(timestamp, today = Date.now()) {
   // isBefore is only true if timestamp is in the past.
   if (isBefore(timestamp, today)) {
     return `${date} (vergangen)`;
+  }
+
+  // date-fns does not have a function that checks if a date is one day
+  // before another one. However, vitest provides an easy way to set the
+  // system time.
+  if (isTomorrow(timestamp)) {
+    return `${date} (morgen)`;
   }
 
   return date;

@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import {
   formatMealplan,
   getMealplanOnDate,
@@ -10,6 +10,16 @@ import unsorted_mealplans from "../fixtures/unsorted_mealplans.json" with { type
 import sorted_mealplans from "../fixtures/sorted_mealplans.json" with { type: "json" };
 
 describe("getMealplanTitle", () => {
+  beforeEach(() => {
+    // tell vitest we use mocked time
+    vi.useFakeTimers();
+  });
+
+  afterEach(() => {
+    // restoring date after each test run
+    vi.useRealTimers();
+  });
+
   it("returns the title for today's meal plan", () => {
     expect(
       getMealplanTitle("2025-10-21T00:00:00.000Z", "2025-10-21T07:34:23.000Z"),
@@ -26,6 +36,13 @@ describe("getMealplanTitle", () => {
     expect(
       getMealplanTitle("1993-05-24T19:10:00.000Z", "1888-01-05T00:00:00.000Z"),
     ).toBe("Montag, 24.05.1993");
+  });
+
+  it("returns the title for tomorrow's meal plan", () => {
+    vi.setSystemTime(new Date("3001-03-18T18:17:00.000Z"));
+    expect(getMealplanTitle("3001-03-19T00:00:12.345Z")).toBe(
+      "Donnerstag, 19.03.3001 (morgen)",
+    );
   });
 });
 
@@ -69,6 +86,16 @@ Changshou Nudelsuppe mit Rindfleisch für ???€
 });
 
 describe("formatMealplan", () => {
+  beforeEach(() => {
+    // tell vitest we use mocked time
+    vi.useFakeTimers();
+  });
+
+  afterEach(() => {
+    // restoring date after each test run
+    vi.useRealTimers();
+  });
+
   it("formats a meal plan with only one counter", () => {
     expect(
       formatMealplan(original_mealplans.days[5], "1000-10-10T00:00:00.000Z"),
@@ -85,7 +112,7 @@ Basmatireis \\(aus biologischem Anbau\\)
 
   it("formats a meal plan with many counters", () => {
     expect(
-      formatMealplan(original_mealplans.days[1], "2025-01-06T00:00:00.000Z"),
+      formatMealplan(original_mealplans.days[1], "2025-01-01T00:00:00.000Z"),
     ).toBe(
       `__*Dienstag, 07\\.01\\.2025*__
 
@@ -147,6 +174,19 @@ Broccoligemüse
 
 __*Wahlessen \\- Aufgang C*__
 Gebratene Nudeln mit Sojastreifen für ???€
+
+[Speiseplan](https://mensaar.de/#/menu/sb)`,
+    );
+  });
+
+  it("escapes the brackets for (morgen) in the meal plan title", () => {
+    vi.setSystemTime("2025-01-27T23:59:59.999Z");
+    expect(formatMealplan(original_mealplans.days[6])).toBe(
+      `__*Dienstag, 28\\.01\\.2025 \\(morgen\\)*__
+
+__*Wahlessen \\- Aufgang C*__
+Yú gedünsteter Kabeljau mit Gemüse für ???€
+Schmorkartoffeln Gamja Jorim
 
 [Speiseplan](https://mensaar.de/#/menu/sb)`,
     );
