@@ -192,7 +192,8 @@ function getMealplanTitle(timestamp, today = Date.now()) {
 
   // date-fns does not have a function that checks if a date is one day
   // before another one. However, vitest provides an easy way to set the
-  // system time.
+  // system time. I prefer the other comparisons because they do not depend
+  // on mocking the system time.
   if (isTomorrow(timestamp)) {
     return `${date} (morgen)`;
   }
