@@ -31,6 +31,8 @@ directly.
 Follow the [guide in grammY documentation](https://grammy.dev/hosting/deno-deploy)
 for Deno Deploy. It is free.
 
+In the settings of your project, you have to [define the environment variable](https://docs.deno.com/deploy/manual/environment-variables/) `TELEGRAM_BOT_PROD_TOKEN` to provide the Telegram Bot API token to the bot.
+
 You have to enable the inline mode for the bot. How to do this is described [in the grammY documentation](https://grammy.dev/plugins/inline-query#enabling-inline-mode).
 
 If you need help, feel free to reach out, for example by opening an issue.
