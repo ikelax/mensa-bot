@@ -1,5 +1,5 @@
 import { expect, it } from "vitest";
-import { formatDate } from "../formatDate";
+import { formatDate } from "../src/formatDate.js";
 
 it("formats 2025-01-06T00:00:00.000Z", () => {
   expect(formatDate("2025-01-06T00:00:00.000Z")).toBe("Montag, 06.01.2025");

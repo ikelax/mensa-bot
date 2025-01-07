@@ -4,7 +4,7 @@ import {
   getMealplanOnDate,
   getMealplanTitle,
   sortMealplans,
-} from "../mealplans";
+} from "../src/mealplans";
 import original_mealplans from "../fixtures/original_mealplans.json" with { type: "json" };
 import unsorted_mealplans from "../fixtures/unsorted_mealplans.json" with { type: "json" };
 import sorted_mealplans from "../fixtures/sorted_mealplans.json" with { type: "json" };

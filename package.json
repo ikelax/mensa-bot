@@ -3,7 +3,7 @@
   "type": "module",
   "version": "1.0.0",
   "description": "Telegram Bot for the meal plan in the canteen of Saarland University",
-  "main": "main.js",
+  "main": "src/main.js",
   "scripts": {
     "test": "vitest",
     "coverage": "vitest run --coverage",
