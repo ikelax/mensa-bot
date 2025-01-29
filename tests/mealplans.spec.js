@@ -8,6 +8,7 @@ import {
 import original_mealplans from "../fixtures/original_mealplans.json" with { type: "json" };
 import unsorted_mealplans from "../fixtures/unsorted_mealplans.json" with { type: "json" };
 import sorted_mealplans from "../fixtures/sorted_mealplans.json" with { type: "json" };
+import escaped_characters_mealplan from "../fixtures/escaped_characters_mealplan.json" with { type: "json" };
 
 describe("getMealplanTitle", () => {
   beforeEach(() => {
@@ -183,6 +184,18 @@ Gebratene Nudeln mit Sojastreifen für ???€
 __*Wahlessen \\- Aufgang C*__
 Yú gedünsteter Kabeljau mit Gemüse für ???€
 Schmorkartoffeln Gamja Jorim
+
+[Speiseplan](https://mensaar.de/#/menu/sb)`,
+    );
+  });
+
+  it("escapes reserved characters", () => {
+    expect(formatMealplan(escaped_characters_mealplan)).toBe(
+      `__*Montag, 06\\.01\\.2025 \\(vergangen\\)*__
+
+__*Menü 1 \\- Aufgang B*__
+Chili\\-Pasta\\. \\#\\(mit Knoblauch und Hartkäse\\)\\! für 3,10€
+Bunt\\! \\(gemischter\\) \\#Blatt\\-salat\\.
 
 [Speiseplan](https://mensaar.de/#/menu/sb)`,
     );
