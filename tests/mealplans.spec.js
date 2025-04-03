@@ -194,7 +194,7 @@ Schmorkartoffeln Gamja Jorim
       `__*Montag, 06\\.01\\.2025 \\(vergangen\\)*__
 
 __*Menü 1 \\- Aufgang B*__
-Chili\\-Pasta\\. \\#\\(mit Knoblauch und Hartkäse\\)\\! für 3,10€
+Chili\\-Pasta a\\\`la Diavolo\\. \\#\\(mit Knoblauch und Hartkäse\\)\\! für 3,10€
 Bunt\\! \\(gemischter\\) \\#Blatt\\-salat\\.
 
 [Speiseplan](https://mensaar.de/#/menu/sb)`,

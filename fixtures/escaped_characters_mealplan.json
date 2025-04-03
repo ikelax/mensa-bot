@@ -17,7 +17,7 @@
       },
       "meals": [
         {
-          "name": "Chili-Pasta. #(mit Knoblauch und Hartkäse)!",
+          "name": "Chili-Pasta a`la Diavolo. #(mit Knoblauch und Hartkäse)!",
           "notices": ["ks", "kn", "ei", "la", "we", "pi"],
           "components": [
             { "name": "Bunt! (gemischter) #Blatt-salat.", "notices": [] }
