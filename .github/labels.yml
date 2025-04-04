@@ -14,6 +14,7 @@
   color: "#272895"
 - name: "dependabot"
   color: "#0366d6"
+  from_name: "dependencies"
 - name: "wontfix"
   color: "#ffffff"
   description: "This will not be worked on"
