@@ -1,0 +1,17 @@
+changelog:
+  categories:
+    - title: Features
+      labels:
+        - "*"
+      exclude:
+        labels:
+          - bug
+          - renovate
+          - dependabot
+    - title: Bugs fixed
+      labels:
+        - bug
+    - title: Dependencies
+      labels:
+        - renovate
+        - dependabot
