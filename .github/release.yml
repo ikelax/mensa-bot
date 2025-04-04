@@ -2,15 +2,17 @@ changelog:
   categories:
     - title: Features
       labels:
-        - "*"
-      exclude:
-        labels:
-          - bug
-          - renovate
-          - dependabot
+        - enhancement
     - title: Bugs fixed
       labels:
         - bug
+    - title: Other Changes
+      labels:
+        - "*"
+      exclude:
+        labels:
+          - renovate
+          - dependabot
     - title: Dependencies
       labels:
         - renovate
