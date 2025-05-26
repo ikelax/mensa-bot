@@ -1,7 +1,11 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:recommended", "schedule:monthly", "group:all"],
+  "extends": [
+    "config:recommended",
+    "schedule:monthly",
+    "group:all",
+    ":maintainLockFilesMonthly"
+  ],
   "labels": ["renovate"],
-  "assignees": ["ikelax"],
-  "lockFileMaintenance": { "enabled": true }
+  "assignees": ["ikelax"]
 }
