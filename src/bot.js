@@ -8,6 +8,7 @@ import {
 } from "./mealplans.js";
 import { formatDate } from "./formatDate.js";
 import { addDays } from "date-fns";
+import { TZDate } from "@date-fns/tz";
 
 export { getMensaBot };
 
@@ -54,6 +55,13 @@ async function getInlineQueryResults() {
 }
 
 /**
+ * @returns The current time in Germany's time zone
+ */
+function getTime() {
+  return TZDate.tz("Europe/Berlin");
+}
+
+/**
  * @param {string} token the token to access the HTTP API of Telegram
  * @returns the bot for tasks related to the Mensa
  */
@@ -67,14 +75,15 @@ function getMensaBot(token) {
   bot.command(["t", "tomorrow"], (ctx) =>
     replyWithMealplanOnDate(
       ctx,
-      addDays(Date.now(), 1),
+      addDays(getTime(), 1),
       "Morgen gibt es kein Essen in der Mensa\\!",
     ),
   );
+  bot.command("time", (ctx) => ctx.reply(getTime()));
   bot.on("message", (ctx) =>
     replyWithMealplanOnDate(
       ctx,
-      Date.now(),
+      getTime(),
       "Heute gibt es kein Essen in der Mensa\\!",
     ),
   );

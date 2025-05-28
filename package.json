@@ -12,6 +12,7 @@
     "prettier:check": "prettier --check ."
   },
   "dependencies": {
+    "@date-fns/tz": "^1.2.0",
     "date-fns": "^4.1.0",
     "grammy": "^1.34.0",
     "ky": "^1.7.4"
