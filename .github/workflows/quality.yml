@@ -10,10 +10,10 @@ jobs:
     name: Prettier
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
-          node-version: 20
+          node-version: 22
       - name: Install dependencies
         run: npm install
       - name: Check formatting with Prettier
@@ -22,10 +22,10 @@ jobs:
     name: Vitest
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
-          node-version: 20
+          node-version: 22
       - name: Install dependencies
         run: npm install
       - name: Run tests
@@ -34,7 +34,7 @@ jobs:
     name: Deno lint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: denoland/setup-deno@v2
         with:
           deno-version: v2.x
