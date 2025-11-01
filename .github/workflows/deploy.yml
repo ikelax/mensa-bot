@@ -24,9 +24,9 @@ jobs:
           deno-version: v2.x
 
       - name: Install Node.js
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@v6
         with:
-          node-version: 22
+          node-version: 24
 
       - name: Install step
         run: npm install
