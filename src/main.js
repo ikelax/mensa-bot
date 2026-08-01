@@ -3,7 +3,7 @@ import { getMensaBot } from "./bot.js";
 
 if (import.meta.main) {
   const bot = getMensaBot(Deno.env.get("TELEGRAM_BOT_PROD_TOKEN"));
-  const endpoint = "https://mensa-bot.deno.dev/" + bot.token;
+  const endpoint = "https://mensa-bot.deno.net/" + bot.token;
   await bot.api.setWebhook(endpoint);
 
   const handleUpdate = webhookCallback(bot, "std/http");
